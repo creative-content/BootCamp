@@ -48,7 +48,7 @@
 
     $.ajax({
       method: "GET",
-      url: 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false',
+      url: 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=gbp&order=market_cap_desc&per_page=100&page=1&sparkline=false',
       dataType: "json",
       success:function(response){
         myArray = response
@@ -95,11 +95,11 @@
 
       <td>${data[i].market_cap_rank}</td>
       <td> <img width="25" src="${data[i].image}"> ${data[i].name}</td>
-      <td>${x}</td>
-      <td>${data[i].current_price}</td>
+      <td>£${x}</td>
+      <td>£${data[i].current_price}</td>
       <td>${data[i].price_change_24h}</td>
-      <td>${data[i].circulating_supply}</td>
-      <td class="${color24h}" >${data[i].market_cap_change_percentage_24h.toFixed(2)}</td>
+      <td>£${data[i].circulating_supply}</td>
+      <td class="${color24h}" >%${data[i].market_cap_change_percentage_24h.toFixed(2)}</td>
       </tr>`
       table.innerHTML += row
       }
