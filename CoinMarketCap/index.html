@@ -4,53 +4,47 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <title>Coin Pump</title>
-
 </head>
 
 <body>
-
-
-
-<div class="container">
-  <div class="jumbotron jumbotron-fluid">
-<span class="text">Coin Hunter</span>
-    <p class="lead" style="text-align:center">A coinmarketcap clone that uses the coingecko API. the search will filter by name. the table header is sticky and the footer ticker is also sticky</p>
-
+  <div class="container">
+    <div class="jumbotron jumbotron-fluid">
+      <span class="text">Coin Hunter</span>
+      <p class="lead" style="text-align:center">A coinmarketcap clone that uses the coingecko API. the search will filter by name. the table header is sticky and the footer ticker is also sticky</p>
+    </div>
   </div>
-  </div>
-    <div class="row">
-      <div class="col">
-        <div class="card card-body">
-          <input class="form-control" id="search-input" type="text" placeholder="Search for names.." >
-        </div>
+  <div class="row">
+    <div class="col">
+      <div class="card card-body">
+        <input class="form-control" id="search-input" type="text" placeholder="Search for names.." >
       </div>
     </div>
+  </div>
 
-    <table class="table table-hover">
-      <thead>
-        <tr class="bg-info">
-          <th class="th2" scope="col">Rank</th>
-          <th class="th2" scope="col">Name</th>
-          <th class="th2" scope="col">Market Cap</th>
-          <th class="th2" scope="col">Price(£)</th2>
-          <th class="th2" scope="col">Price Change(24h)</th2>
-          <th class="th2" scope="col">Circulating Supply</th2>
-          <th class="th2" scope="col">Change(24h)</th>
-        </tr>
-      </thead>
-      <tbody id="myTable"></tbody>
-    </table>
+  <table class="table table-hover">
+    <thead>
+      <tr class="bg-info">
+        <th class="th2" scope="col">Rank</th>
+        <th class="th2" scope="col">Name</th>
+        <th class="th2" scope="col">Market Cap</th>
+        <th class="th2" scope="col">Price(£)</th2>
+        <th class="th2" scope="col">Price Change(24h)</th2>
+        <th class="th2" scope="col">Circulating Supply</th2>
+        <th class="th2" scope="col">Change(24h)</th>
+      </tr>
+    </thead>
+    <tbody id="myTable"></tbody>
+  </table>
 
-    <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
-    <div class="fixed-bottom"><coingecko-coin-price-marquee-widget  coin-ids="bitcoin,ethereum,eos,ripple,litecoin" currency="gbp" background-color="#58ccc0" locale="en"></coingecko-coin-price-marquee-widget>
-    </div>
+  <script src="https://widgets.coingecko.com/coingecko-coin-price-marquee-widget.js"></script>
+  <div class="fixed-bottom"><coingecko-coin-price-marquee-widget  coin-ids="bitcoin,ethereum,eos,ripple,litecoin" currency="gbp" background-color="#58ccc0" locale="en"></coingecko-coin-price-marquee-widget>
+  </div>
 
   <script>
   	var myArray = []
-
 
     $.ajax({
       method: "GET",
@@ -58,12 +52,10 @@
       dataType: "json",
       success:function(response){
         myArray = response
-          buildTable(myArray);
+        buildTable(myArray);
   		  console.log(myArray);
-}
-          });
-
-
+      }
+    });
 
     $("#search-input").on('keyup',function(){
       var value=$(this).val();
@@ -72,46 +64,46 @@
       buildTable(data);
     });
 
-      buildTable(myArray);
+    buildTable(myArray);
 
-      function searchTable(value,data){
-        var filteredData=[];
-        for (var i=0;i<data.length;i++){
-          value=value.toLowerCase();
-          var name=data[i].name.toLowerCase();
+    function searchTable(value,data){
+      var filteredData=[];
+      for (var i=0;i<data.length;i++){
+        value=value.toLowerCase();
+        var name=data[i].name.toLowerCase();
 
-          if (name.includes(value)){
+        if (name.includes(value)){
             filteredData.push(data[i]);
           }
         }
         return filteredData;
       }
 
-      function buildTable(data){
-        var table = document.getElementById('myTable');
-        table.innerHTML = '';
-        for (var i = 0; i < data.length; i++){
-          var color24h = "";
-          if (data[i].market_cap_change_percentage_24h > 0)
-            color24h = "green";
-          if (data[i].market_cap_change_percentage_24h < 0)
-            color24h = "red";
-          x = new Intl.NumberFormat().format(data[i].market_cap);
+    function buildTable(data){
+      var table = document.getElementById('myTable');
+      table.innerHTML = '';
+      for (var i = 0; i < data.length; i++){
+        var color24h = "";
+        if (data[i].market_cap_change_percentage_24h > 0)
+          color24h = "green";
+        if (data[i].market_cap_change_percentage_24h < 0)
+          color24h = "red";
+      x = new Intl.NumberFormat().format(data[i].market_cap);
 
 
-            var row = `<tr>
+    var row = `<tr>
 
-            <td>${data[i].market_cap_rank}</td>
-            <td> <img width="25" src="${data[i].image}"> ${data[i].name}</td>
-            <td>${x}</td>
-            <td>${data[i].current_price}</td>
-            <td>${data[i].price_change_24h}</td>
-            <td>${data[i].circulating_supply}</td>
-            <td class="${color24h}" >${data[i].market_cap_change_percentage_24h.toFixed(2)}</td>
-             </tr>`
-            table.innerHTML += row
-        }
+      <td>${data[i].market_cap_rank}</td>
+      <td> <img width="25" src="${data[i].image}"> ${data[i].name}</td>
+      <td>${x}</td>
+      <td>${data[i].current_price}</td>
+      <td>${data[i].price_change_24h}</td>
+      <td>${data[i].circulating_supply}</td>
+      <td class="${color24h}" >${data[i].market_cap_change_percentage_24h.toFixed(2)}</td>
+      </tr>`
+      table.innerHTML += row
       }
+    }
 
 </script>
 
