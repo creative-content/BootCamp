@@ -11,13 +11,8 @@ contract hello_world{
 
     Person[] public people;
 
-        function createPerson(string memory name, uint memory age, uint memory height) public{
+        function createPerson(string memory name, uint age, uint height) public{
 
-        Person memory newPerson;
-        newPerson.id=people.length;
-        newPerson.name = name;
-        newPerson.age = age;
-        newPerson.height = height;
-        people.push(newPerson);
+        people.push(Person(people.length, name, age, height));
         }
 }
