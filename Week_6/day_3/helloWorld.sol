@@ -1,13 +1,20 @@
 pragma solidity 0.5.12;
-import './destroy.sol';
+import './destroyable.sol';
 
-contract helloWorld is destroy{
+contract helloWorld is destroyable{
 
   struct Person {
     uint id;
     string name;
     uint age;
     uint height;
+  }
+
+  uint public balance;
+
+  modifier costs(uint cost){
+        require(msg.value >= cost);
+        _;
   }
 
   mapping (address => Person) private people;
@@ -24,7 +31,25 @@ contract helloWorld is destroy{
     insertPerson(newPerson);
     creators.push(msg.sender);
 
-    emit personCreated(newPerson.name);
     }
+    function insertPerson(Person memory newPerson) private {
+           address creator = msg.sender;
+           people[creator] = newPerson;
+       }
+
+       function getPerson() public view returns(string memory name, uint age, uint height){
+           address creator = msg.sender;
+           return (people[creator].name, people[creator].age, people[creator].height);
+       }
+
+      function getCreator(uint index) public view onlyOwner returns(address){
+          return creators[index];
+      }
+      function withdrawAll() public onlyOwner returns(uint) {
+          uint toTransfer = balance;
+          balance = 0;
+          msg.sender.transfer(balance);
+          return toTransfer;
+      }
 
 }
